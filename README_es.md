@@ -99,7 +99,8 @@ La interfaz de terminal gira en torno a un prompt enmarcado que lleva el estado 
 
 ### Requisitos
 - **Node.js**: `v20.0.0` o superior
-- **npm**, **pnpm** o **yarn**
+- **npm**, **pnpm** o **yarn** (para instalar la CLI publicada)
+- **Bun** `>=1.4.3` (opcional, recomendado para quienes compilan desde el código fuente)
 
 ### Instalar Node.js y npm
 
@@ -126,7 +127,7 @@ sudo pacman -S nodejs npm
 pkg update && pkg install -y nodejs-lts
 ```
 
-Vuelve a abrir la terminal y comprueba: `node -v` (debe ser `v20` o superior) y `npm -v`. Cualquier sistema: el instalador de [nodejs.org](https://nodejs.org/en/download) o [nvm](https://github.com/nvm-sh/nvm).
+Vuelve a abrir la terminal y comprueba: `node -v` (debe ser `v20` o superior) y `npm -v`. Quienes compilen desde el código fuente también pueden comprobar `bun --version` (debe ser `>=1.4.3`). Cualquier sistema: el instalador de [nodejs.org](https://nodejs.org/en/download) o [nvm](https://github.com/nvm-sh/nvm).
 
 ### Instalación global rápida (recomendada)
 
@@ -152,8 +153,9 @@ devx
 ```bash
 git clone https://github.com/apvcode/Termux-Dev.git
 cd Termux-Dev
-npm install
-npm link
+bun install
+bun run build
+bun link
 ```
 
 ### Desinstalación completa

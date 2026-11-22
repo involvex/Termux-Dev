@@ -20,16 +20,19 @@
     "assets/preview.png"
   ],
   "scripts": {
-    "build": "tsc && node ./scripts/copy-assets.js",
-    "start": "node ./bin/devx.js",
-    "dev": "tsc --watch",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "prepublishOnly": "npm run build"
+    "build": "bunx tsc && bun ./scripts/copy-assets.js",
+    "start": "bun ./bin/devx.js",
+    "dev": "bunx tsc --watch",
+    "test": "bunx vitest run",
+    "test:watch": "bunx vitest",
+    "check": "bun check",
+    "audit": "bun audit --omit=dev --audit-level=high",
+    "prepublishOnly": "bun run build"
   },
   "engines": {
     "node": ">=20.0.0"
   },
+  "packageManager": "bun@1.4.5",
   "keywords": [
     "ai",
     "agent",
@@ -53,15 +56,15 @@
   },
   "homepage": "https://github.com/apvcode/Termux-Dev#readme",
   "dependencies": {
-    "@clack/prompts": "^1.7.0",
-    "@inquirer/prompts": "^8.6.0",
-    "commander": "^12.0.0",
+    "@clack/prompts": "^1.9.0",
+    "@inquirer/prompts": "^8.8.1",
+    "commander": "^14.0.3",
     "marked": "^15.0.12",
-    "marked-terminal": "^7.3.0",
+    "marked-terminal": "7.3.0",
     "mqtt": "^5.16.1",
     "picocolors": "^1.1.1",
     "qrcode-terminal": "^0.12.0",
-    "ws": "^8.22.2"
+    "ws": "^8.23.0"
   },
   "devDependencies": {
     "@types/marked-terminal": "^6.1.1",
@@ -70,6 +73,6 @@
     "@types/ws": "^8.18.2",
     "mqtt-packet": "^9.0.2",
     "typescript": "^5.4.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }

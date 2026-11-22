@@ -99,7 +99,8 @@ devx
 
 ### Требования
 - **Node.js**: `v20.0.0` или выше
-- **npm**, **pnpm** или **yarn**
+- **npm**, **pnpm** или **yarn** (для установки опубликованного CLI)
+- **Bun** `>=1.4.3` (необязательно, рекомендуется разработчикам, собирающим из исходников)
 
 ### Установка Node.js и npm
 
@@ -126,7 +127,7 @@ sudo pacman -S nodejs npm
 pkg update && pkg install -y nodejs-lts
 ```
 
-Откройте терминал заново и проверьте: `node -v` (должно быть `v20` или выше) и `npm -v`. Любая система: установщик на [nodejs.org](https://nodejs.org/en/download) или [nvm](https://github.com/nvm-sh/nvm).
+Откройте терминал заново и проверьте: `node -v` (должно быть `v20` или выше) и `npm -v`. Разработчикам, собирающим из исходников, также можно проверить `bun --version` (должно быть `>=1.4.3`). Любая система: установщик на [nodejs.org](https://nodejs.org/en/download) или [nvm](https://github.com/nvm-sh/nvm).
 
 ### Быстрая глобальная установка (Рекомендуется)
 
@@ -152,8 +153,9 @@ devx
 ```bash
 git clone https://github.com/apvcode/Termux-Dev.git
 cd Termux-Dev
-npm install
-npm link
+bun install
+bun run build
+bun link
 ```
 
 ### Полное удаление

@@ -34,20 +34,36 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # The repo is Bun-managed for development; package.json pins the version.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      # The published CLI still runs on Node, so every supported Node version is tested.
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
 
       - name: Install Dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run check
 
       - name: Compile TypeScript (Build)
-        run: npm run build
+        run: bun run build
 
       - name: Run Unit Tests (Vitest)
-        run: npm test
+        run: bun run test
 
       # devx recognises Termux by its environment (PREFIX, TERMUX_VERSION). The same tests run once
       # more with those set, so the Termux-only paths (notifications, packages, prompt) are covered.
@@ -56,7 +72,7 @@ jobs:
         env:
           PREFIX: /data/data/com.termux/files/usr
           TERMUX_VERSION: '0.118.1'
-        run: npm test
+        run: bun run test
 
       - name: Test CLI Binary
         run: node ./bin/devx.js --help
@@ -78,12 +94,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22.x
-          cache: npm
+          bun-version-file: package.json
 
-      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-audit-${{ hashFiles('bun.lock') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      - run: bun install --frozen-lockfile
 
       - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=high
+        run: bun audit --omit=dev --audit-level=high

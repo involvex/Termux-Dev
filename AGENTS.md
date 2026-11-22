@@ -34,34 +34,35 @@ phone, and a PLAN/AGENT dual-mode workflow.
 
 ## Useful Commands
 
-All commands are defined in `package.json` and used by CI (`.github/workflows/ci.yml`).
-Run them from the repository root.
+This repo uses **Bun** (>=1.4.3, pinned via the `packageManager` field in `package.json`) as its package manager and script runner. npm remains the distribution channel for end users (`npm install -g termux-dev`). All commands below are defined in `package.json` scripts and used by CI (`.github/workflows/ci.yml`). Run them from the repository root.
 
 ```bash
-# Install dependencies (CI uses npm ci for a clean, lockfile-exact install)
-npm ci
+# Install dependencies (CI uses bun install --frozen-lockfile for a clean, lockfile-exact install)
+bun install --frozen-lockfile
 
 # Compile TypeScript to dist/ and copy assets
-npm run build
+bun run build
 
 # Run the CLI from source
-npm start
+bun run start
 node ./bin/devx.js --help
 
 # Develop with automatic recompilation
-npm run dev
+bun run dev
 
 # Run tests once / in watch mode
-npm test
-npm run test:watch
+bun run test
+bun run test:watch
 ```
 
 CI-equivalent verification (match this locally before opening a PR):
 
 ```bash
-npm ci
-npm run build
-npm test
+bun install --frozen-lockfile
+bun run build
+bun run check        # typecheck
+bun run test
+bun run audit
 node ./bin/devx.js --help
 node ./bin/devx.js --version
 node ./scripts/check-release.js   # version consistency + npm package contents
@@ -74,7 +75,7 @@ Debug/manual checks:
 devx /doctor
 
 # Exercise Termux-only code paths in tests (as CI does on ubuntu + Node 22)
-PREFIX=/data/data/com.termux/files/usr TERMUX_VERSION=0.118.1 npm test
+PREFIX=/data/data/com.termux/files/usr TERMUX_VERSION=0.118.1 bun run test
 ```
 
 ## Technologies
@@ -95,7 +96,7 @@ PREFIX=/data/data/com.termux/files/usr TERMUX_VERSION=0.118.1 npm test
 
 - **Keep builds strict.** `tsconfig.json` enables `strict`, `esModuleInterop`,
   `skipLibCheck`, and consistent file casing. New code must compile with
-  `npm run build` without errors — CI builds on every OS/Node combination.
+  `bun run build` without errors — CI builds on every OS/Node combination.
 - **Stay cross-platform and Node-20 compatible.** Code runs on Termux, Windows,
   macOS, and Linux, and on Node 20+. Avoid newer-only APIs and platform-specific
   path/shell assumptions; use `path` helpers and PowerShell-safe examples where relevant.
@@ -121,15 +122,17 @@ PREFIX=/data/data/com.termux/files/usr TERMUX_VERSION=0.118.1 npm test
   contrast on the dark background (`#0a0a0c`); maintain that guarantee for new palettes.
 - **Validate releases with the provided script.** Version numbers live in
   multiple files; `node ./scripts/check-release.js` verifies consistency and
-  that the npm package contains the built program.
+  that the npm package contains the built program. Publishing still happens on
+  npm, but `prepublishOnly` runs `bun run build`, so Bun must be installed on
+  the machine that runs `npm publish`.
 
 ## Guidelines
 
 - **Follow conventional commits.** History uses `feat:`, `fix:`, `docs:`, and
   `chore:` with optional scopes (for example, `feat(remote): ...`, `fix: ...`).
   Keep subjects short and describe the user-visible effect.
-- **Match local checks to CI before committing/pushing.** Run `npm run build`
-  and `npm test` (and `node ./scripts/check-release.js` for releases) locally;
+- **Match local checks to CI before committing/pushing.** Run `bun run build`
+  and `bun run test` (and `node ./scripts/check-release.js` for releases) locally;
   do not bypass git hooks or CI parity.
 - **Document behavior in the English README first**, then propagate to the eight
   translations. Reference real paths and links that exist in the repo.

@@ -99,7 +99,8 @@ Android では、まず Termux で `pkg install nodejs-lts` を実行してく�
 
 ### 前提条件
 - **Node.js**：`v20.0.0` 以上
-- **npm**、**pnpm**、または **yarn**
+- **npm**、**pnpm**、または **yarn**（公開済み CLI のインストール用）
+- **Bun**：`>=1.4.3`（任意、ソースからビルドする開発者向け）
 
 ### Node.js と npm のインストール
 
@@ -126,7 +127,7 @@ sudo pacman -S nodejs npm
 pkg update && pkg install -y nodejs-lts
 ```
 
-ターミナルを開き直して確認します：`node -v`（`v20` 以上であること）と `npm -v`。どのシステムでも：[nodejs.org](https://nodejs.org/en/download) のインストーラーまたは [nvm](https://github.com/nvm-sh/nvm)。
+ターミナルを開き直して確認します：`node -v`（`v20` 以上であること）と `npm -v`。ソースからビルドする開発者は `bun --version`（`>=1.4.3` であること）も確認できます。どのシステムでも：[nodejs.org](https://nodejs.org/en/download) のインストーラーまたは [nvm](https://github.com/nvm-sh/nvm)。
 
 ### グローバルへの簡単インストール（推奨）
 
@@ -152,8 +153,9 @@ devx
 ```bash
 git clone https://github.com/apvcode/Termux-Dev.git
 cd Termux-Dev
-npm install
-npm link
+bun install
+bun run build
+bun link
 ```
 
 ### 完全なアンインストール

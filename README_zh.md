@@ -99,7 +99,8 @@ devx
 
 ### 前置条件
 - **Node.js**：`v20.0.0` 或更高版本
-- **npm**、**pnpm** 或 **yarn**
+- **npm**、**pnpm** 或 **yarn**（用于安装已发布的 CLI）
+- **Bun**：`>=1.4.3`（可选，推荐从源码构建的贡献者使用）
 
 ### 安装 Node.js 和 npm
 
@@ -126,7 +127,7 @@ sudo pacman -S nodejs npm
 pkg update && pkg install -y nodejs-lts
 ```
 
-重新打开终端并检查：`node -v`（应为 `v20` 或更高）和 `npm -v`。任何系统：可使用 [nodejs.org](https://nodejs.org/en/download) 上的安装程序或 [nvm](https://github.com/nvm-sh/nvm)。
+重新打开终端并检查：`node -v`（应为 `v20` 或更高）和 `npm -v`。从源码构建的贡献者还可以检查 `bun --version`（应为 `>=1.4.3`）。任何系统：可使用 [nodejs.org](https://nodejs.org/en/download) 上的安装程序或 [nvm](https://github.com/nvm-sh/nvm)。
 
 ### 快速全局安装（推荐）
 
@@ -152,8 +153,9 @@ devx
 ```bash
 git clone https://github.com/apvcode/Termux-Dev.git
 cd Termux-Dev
-npm install
-npm link
+bun install
+bun run build
+bun link
 ```
 
 ### 完全卸载
